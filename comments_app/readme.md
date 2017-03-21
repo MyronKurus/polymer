@@ -1,6 +1,6 @@
 # Project Title
 
-This is test application, using Polymer - JavaScript library on client-side and node.js on the server side
+This is test application, using Polymer - JavaScript library on client-side, Node.js on the server side and Mongolab as database
 
 ## Getting Started
 
@@ -42,6 +42,7 @@ http://localhost:3000/
 
 * [Polymer](https://www.polymer-project.org/) - The web library used
 * [Node.JS](https://nodejs.org/) - Server-side JavaScript framework
+* [Mongolab](https://mlab.com/) - No-SQL online database
 
 
 ## Author:
