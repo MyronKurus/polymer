@@ -1,0 +1,109 @@
+    <link href="../bower_components/polymer/polymer.html" rel="import">
+    <link href="../bower_components/paper-fab/paper-fab.html" rel="import">
+    <link href="../bower_components/paper-item/paper-item.html" rel="import">
+    <link href="../bower_components/paper-material/paper-material.html" rel="import">
+
+<dom-module id="comment-element" attributes="comment date user rid">
+  <style>
+    /* CSS rules for your element */
+	  .comment {
+			padding: 10px;
+		}
+
+	  paper-button {
+		  background: #ccc;
+	  }
+
+	  paper-fab {
+		  position: absolute;
+		  bottom: 3vh;
+			right: 3vw;
+			background: #4DD0E1;
+	  }
+
+	  .done {
+			background: green;
+	  }
+
+	  .info {
+		  font-style: italic;
+		  font-size: 14px;
+		  color: #696969;
+			padding-top: 0;
+			padding-bottom: 0;
+	  }
+
+	  paper-material {
+			background-color: #fff;
+			max-width: 640px;
+			width: 90%;
+			margin: 25px auto;
+			position: relative;
+		}
+
+	  .info span {
+		   margin-left: 5px;
+			 font-weight: 700;
+	  }
+
+	  paper-input {
+			margin: 0 2vw;
+		}
+
+		p.clip {
+	    white-space: nowrap;
+	    overflow: hidden;
+	    font-weight: 700;
+	  	text-overflow: ellipsis;
+		}
+
+		p.total {
+			text-align: justify;
+		}
+
+  </style>
+
+  <template>
+    <!-- local DOM for your element -->
+    <paper-material class="comment" elevation="1">
+	    <paper-fab hidden={{editing}}  icon="icons:create" on-tap="doEdit" class="edit" mini></paper-fab>
+	    <paper-fab hidden={{!editing}} icon="icons:done"   on-tap="doEdit" class="done" mini></paper-fab>
+	    <paper-item hidden="{{editing}}" id="comment"><p class="clip">{{comment}}</p></paper-item>
+	    <paper-item hidden="{{!editing}}" id="comment"><p class="total">{{comment}}</p></paper-item>
+	    <paper-item class="info">Created by: <span>{{ user }}</span></paper-item>
+	    <paper-item class="info">{{ date }}</paper-item>
+    </paper-material> <!-- data bindings in local DOM -->
+  </template>
+
+	<script>
+	  Polymer({
+	    is: "comment-element",
+	    properties: {
+	    	// declare properties for the element's public API
+				user: {
+					type: String,
+					value: ""
+				},
+				comment: {
+	      	type: String,
+					value: "Hello!"
+	    	},
+	    	rid: {
+		    	type: Number,
+		    	value: -1
+	    	},
+	    	editing: {
+		    	type: Boolean,
+		    	value: false
+	    	},
+        date: {
+          type: String,
+          value: ""
+        }
+	    },
+	    doEdit: function(e){
+	    	this.editing=!this.editing;
+			}
+	  });
+	</script>
+</dom-module>

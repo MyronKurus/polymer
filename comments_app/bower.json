@@ -1,0 +1,35 @@
+{
+  "name": "Comments App",
+  "version": "0.0.1",
+  "authors": [
+    "Myron Kurus <myron.kurus@gmail.com>"
+  ],
+  "description": "A Comments List using PubNub and Polymer",
+  "main": "index.html",
+  "keywords": [
+    "Polymer",
+    "PubNub",
+    "Comments",
+    "List"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "webcomponentsjs": "^0.7.24",
+    "paper-material": "^1.0.6",
+    "paper-item": "^1.2.1",
+    "paper-fab": "^1.2.1",
+    "polymer": "^1.8.1",
+    "iron-ajax": "^1.4.3",
+    "iron-icons": "^1.2.0",
+    "paper-input": "^1.1.23",
+    "paper-toolbar": "^1.1.7",
+    "paper-header-panel": "^1.1.7"
+  }
+}

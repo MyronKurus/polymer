@@ -1,0 +1,160 @@
+<link href="../bower_components/polymer/polymer.html" rel="import">
+<link href="../bower_components/paper-header-panel/paper-header-panel.html" rel="import">
+<link href="../bower_components/paper-toolbar/paper-toolbar.html" rel="import">
+<link href="../bower_components/paper-material/paper-material.html" rel="import">
+<link href="../bower_components/paper-item/paper-item.html" rel="import">
+<link href="../bower_components/paper-input/paper-input.html" rel="import">
+<link href="../bower_components/iron-icons/iron-icons.html" rel="import">
+<link href="../bower_components/iron-ajax/iron-ajax.html" rel="import">
+<link href="../elements/comments-element.html" rel="import">
+
+<dom-module id="comments-app">
+	<style>
+
+		#commentEntry {
+			margin: 0;
+			width: 100%;
+			max-width: none;
+			border-bottom: 1px solid #ccc;
+		}
+
+		paper-input {
+			margin: 0 4vw;
+			padding: 0;
+		}
+
+		paper-material {
+			background-color: #fff;
+			max-width: 640px;
+			width: 95%;
+			margin: 25px auto;
+			position: relative;
+		}
+
+		#comments {
+			overflow-y: scroll;
+			height: 75vh;
+		}
+
+		paper-fab {
+		  position: absolute;
+		  background: #00BCD4;
+		  bottom: -3vh;
+		  right: 2vw;
+	  }
+
+		.main-panel {
+			background-color: #eee;
+			height: 100vh;
+			overflow-y: hidden;
+		}
+
+		.paper-material-0[elevation="2"] {
+			z-index: 1;
+		}
+
+	</style>
+
+	<template>
+
+		<paper-header-panel main class="main-panel">
+
+			<paper-toolbar>
+				<paper-item>Comments Line</paper-item>
+			</paper-toolbar>
+
+			<div style="border-left: 1px solid #ccc;">
+
+				<paper-material id="commentEntry" elevation="2">
+					<paper-input id="tComment" label="Comment"></paper-input>
+					<paper-input id="tUser" char-counter label="Username" maxlength="16" error="maximum characters exceeded" style="width:75%;display: inline-block" ></paper-input>
+					<paper-fab id="addComment" icon="icons:add" on-tap="postComment"></paper-fab>
+				</paper-material>
+
+				<div id="comments">
+					<template id="comments-list" is="dom-repeat" items="{{comments}}">
+						<comment-element user="{{item.username}}" comment="{{item.text}}" date={{item.date}} rid="{{item.rid}}"></comment-element>
+					</template>
+				</div>
+
+			</div>
+		</paper-header-panel>
+
+		<iron-ajax
+            id="requestRepos"
+            url="http://localhost:3000/api/comments"
+            params='{"type":"GET"}'
+            handle-as="json"
+            on-response="handleResponse">
+      </iron-ajax>
+			<iron-ajax
+						id='postCommentRepos'
+						url="http://localhost:3000/api/comments"
+						method="POST"
+						body="{{params}}"
+						content-type="application/json">
+			</iron-ajax>
+
+	</template>
+
+	<script>
+	  // element registration
+	  Polymer({
+	    is: "comments-app",
+	    properties: {
+				comment: {
+					type: Array,
+					value: []
+				},
+				messages: {
+					type: Array,
+					value: []
+				}
+	    },
+	    postComment: function(e) {
+		    var comment = this.$.tComment.value;
+		    var user = this.$.tUser.value;
+
+				if (comment==="") {
+			    alert("Comment is Empty!");
+			    return;
+				}
+		    if (user==="") {
+					alert("User is Empty!");
+			  	return;
+				}
+
+		    this.$.tComment.value = "";
+				this.$.tUser.value = "";
+
+				this.params = {
+					text: comment,
+					username: user,
+					date: new Date().toLocaleString()
+				};
+
+				this.$.postCommentRepos.generateRequest();
+				this.$.requestRepos.generateRequest();
+
+	    },
+	    subscribeCallback: function(e) {
+		    while(this.messages.length > 0) {
+			    var item = this.messages.pop();
+					if (item.type === "comment") {
+						this.unshift('comment', { comment:item.comment, user:item.user, rid:item.rid });
+					}
+		    }
+	    },
+			ready: function () {
+        this.$.requestRepos.generateRequest();
+      },
+      handleResponse: function (data) {
+        this.comments = data.detail.response;
+      }
+
+	  });
+	  function randID() {
+			return Math.floor(Math.random()*10000);
+	  }
+	</script>
+</dom-module>
